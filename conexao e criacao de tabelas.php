@@ -15,16 +15,16 @@
             $this->conectar();
         }
         
-        public function get_host(){
+        private function get_host(){
             return $this->host;
         }
-        public function get_database(){
+        private function get_database(){
             return $this->baseDados;
         }
-        public function get_usuario(){
+        private function get_usuario(){
             return $this->usuario;
         }
-        public function get_senha(){
+        private function get_senha(){
             return $this->senha;
         }
         public function get_conectado(){
@@ -34,22 +34,22 @@
             return $this->connection;
         }
         
-        public function set_host($h){
+        private function set_host($h){
             $this->host = $h;
         }
-        public function set_database($db){
+        private function set_database($db){
             $this->baseDados = $db;
         }
-        public function set_usuario($user){
+        private function set_usuario($user){
             $this->usuario = $user;
         }
-        public function set_senha($pass){
+        private function set_senha($pass){
             $this->senha = $pass;
         }
-        public function set_conectado($c){
+        private function set_conectado($c){
             $this->conectado = $c;
         }
-        public function set_connection($cn){
+        private function set_connection($cn){
             $this->connection = $cn;
         }
         
@@ -93,23 +93,23 @@
             $this->construir($cn);
         }
         
-        public function get_nome(){
+        private function get_nome(){
             return $this->nomeTabela;
         }
-        public function get_chave(){
+        private function get_chave(){
             return $this->comChaveAuto;
         }
-        public function get_conteudo(){
+        private function get_conteudo(){
             return $this->conteudoTabela;
         }
         
-        public function set_nome($nome){
+        private function set_nome($nome){
             $this->nomeTabela = $nome;
         }        
-        public function set_chave($chave){
+        private function set_chave($chave){
             $this->comChaveAuto = $chave;
         }
-        public function set_conteudo($conteudo){
+        private function set_conteudo($conteudo){
             $this->conteudoTabela = $conteudo;
         }
         
@@ -167,7 +167,7 @@
         array("telefone",2,2)
     );
     
-    $tb = new criarTabela('teste20', true, $tabelas, $cn);
+    new criarTabela('tabela', true, $tabelas, $cn);
     
     
 ?>
