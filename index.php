@@ -1,5 +1,5 @@
 <?php
-    include 'mk.php';
+    include 'manipular banco de dados.php';
     
     $cn = new DataBase('localhost', 'base1', 'root', ''); 
     
