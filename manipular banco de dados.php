@@ -113,7 +113,7 @@
             $this->get_connection()->exec($table);
         }
         
-        public function insertTable($nt, $columns, $values){
+        public function insertData($nt, $columns, $values){
             /* parametros:
              *  1°
              *  True para dados simples
@@ -165,8 +165,28 @@
             }
         }
         
+        public function consultTableID($id, $table, $colunasConsulta){
+            $arrayRetorno = array();
+            $rs = $this->get_connection()->prepare("SELECT * FROM $table WHERE id = ?");
+            $rs->bindParam(1, $id);
+            if($rs->execute()){
+                if($registro = $rs->fetch(PDO::FETCH_OBJ)){
+                    foreach($colunasConsulta as $vl){
+                        $i = $registro->$vl;
+                        array_push($arrayRetorno, $i);                        
+                    }
+                }
+            }
+            return $arrayRetorno;
+        }
         
-
+        /*
+        class sendEmail{
+            
+            
+            
+        }
+        */
     }
     
     
