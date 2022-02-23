@@ -1,5 +1,6 @@
 <?php
-    include 'manipular banco de dados.php';
+
+    include 'mk.php';
     
     $cn = new DataBase('localhost', 'base1', 'root', ''); 
     
@@ -19,7 +20,11 @@
         array("Maria", 32),
     );
     
-        
-    $cn->inserirDados('Nomes', $colunas, $valores);
+    $cn->insertData('Nomes', $colunas, $valores);
     
+    $colunasConsultarID = array('nome', 'idade');
+    
+    $return = $cn->consultTableID(67, 'Nomes', $colunasConsultarID);
+    
+    var_dump($return);
 ?>
