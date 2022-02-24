@@ -164,12 +164,12 @@
             }
         }
         
-        public function consultTableID($id, $table, $columns){ // consult simple by id / 1° = id / 2° name table / 3° returned columns
+        public function consultSimpleTable($columnsConsult, $vlTable, $table, $columns){ // consult simple / 1° = name table consult / 2° value table consult / 3° table consult / 4° returned columns
             $arrayReturn = array();
-            $rs = $this->get_connection()->prepare("SELECT * FROM $table WHERE id = ?");
-            $rs->bindParam(1, $id);
+            $rs = $this->get_connection()->prepare("SELECT * FROM $table WHERE $columnsConsult = ?");
+            $rs->bindParam(1, $vlTable);
             if($rs->execute()){
-                if($registro = $rs->fetch(PDO::FETCH_OBJ)){
+                while($registro = $rs->fetch(PDO::FETCH_OBJ)){
                     foreach($columns as $vl){
                         $i = $registro->$vl;
                         array_push($arrayReturn, $i);                        
@@ -179,7 +179,7 @@
             return $arrayReturn;
         }
         
-        public function consultTableFull($table, $columns, $orderColumns, $sort){ // consult all data the table / 1° table / 2° returned columns / 3° sort column / 4° sort
+        public function consultTableFull($table, $orderColumns, $sort, $columns){ // consult all data the table / 1° table / 2° table sort / 3° sort column / 4° returned columns
             //$sort: 0 = none / 1 = ascending and 3 = descending
             $arrayReturn = array();
             
