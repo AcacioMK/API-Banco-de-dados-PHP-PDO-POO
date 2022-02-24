@@ -24,7 +24,7 @@
     
     
     
-    $return = $cn->consultSimpleTable('idade', '230', 'Nomes', $colunas);
+    $return = $cn->consultSimpleTable('idade', '23', 'Nomes', $colunas);
     
     $return2 = $cn->consultTableFull('Nomes', 'nome', 1, $colunas);
     
