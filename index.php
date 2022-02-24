@@ -22,9 +22,13 @@
     
     $cn->insertData('Nomes', $colunas, $valores);
     
-    $colunasConsultarID = array('nome', 'idade');
     
-    $return = $cn->consultTableFull('Nomes', $colunasConsultarID, 'id', 1);
+    
+    $return = $cn->consultSimpleTable('idade', '230', 'Nomes', $colunas);
+    
+    $return2 = $cn->consultTableFull('Nomes', 'nome', 1, $colunas);
     
     var_dump($return);
+    
+    
 ?>
