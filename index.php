@@ -16,15 +16,15 @@
     $colunas = array("nome", "idade");
     
     $valores = array(
-        array("AcacioMK", 23),
-        array("Maria", 32),
+        array("Ana", 23),
+        array("Joao", 32),
     );
     
     $cn->insertData('Nomes', $colunas, $valores);
     
     $colunasConsultarID = array('nome', 'idade');
     
-    $return = $cn->consultTableID(67, 'Nomes', $colunasConsultarID);
+    $return = $cn->consultTableFull('Nomes', $colunasConsultarID, 'id', 1);
     
     var_dump($return);
 ?>
