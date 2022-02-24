@@ -1,4 +1,10 @@
 <?php
+/*
+* By Acacio MK
+* https://github.com/AcacioMK
+* acacio89oliveira@gmail.com
+* please don't delete these comments
+*/
     class DataBase{
         private $host;
         private $baseDados;
@@ -7,7 +13,7 @@
         private $connected;
         private $connection;
         
-        function __construct($h, $db, $user, $pass){
+        function __construct($h, $db, $user, $pass){ // host, database, user and password
             $this->set_host($h);
             $this->set_database($db);
             $this->set_user($user);
@@ -15,16 +21,16 @@
             $this->connect();
         }
         
-        public function get_host(){
+        private function get_host(){
             return $this->host;
         }
-        public function get_database(){
+        private function get_database(){
             return $this->baseDados;
         }
-        public function get_user(){
+        private function get_user(){
             return $this->usuario;
         }
-        public function get_password(){
+        private function get_password(){
             return $this->senha;
         }
         public function get_connected(){
@@ -34,49 +40,46 @@
             return $this->connection;
         }
         
-        public function set_host($h){
+        private function set_host($h){
             $this->host = $h;
         }
-        public function set_database($db){
+        private function set_database($db){
             $this->baseDados = $db;
         }
-        public function set_user($user){
+        private function set_user($user){
             $this->usuario = $user;
         }
-        public function set_password($pass){
+        private function set_password($pass){
             $this->senha = $pass;
         }
-        public function set_connected($c){
+        private function set_connected($c){
             $this->conectado = $c;
         }
-        public function set_connection($cn){
+        private function set_connection($cn){
             $this->connection = $cn;
         }
         
-        private function connect(){
+        private function connect(){ // connecting database
             try{
                 $c = new PDO("mysql:host=".$this->get_host().";dbname=".$this->get_database(), $this->get_user(), $this->get_password());                
                 $this->set_connection($c);
-                $this->set_connected('Connected');
+                $this->set_connected('Connected'); // return 
                 
             }
             catch (PDOException $e){                
-                $this->set_connected('Connection failure');
+                $this->set_connected('Connection failure'); // return 
                 
             }
         }
-        public function createTable($name, $auto, $content){
-            /*
-                1 = nome da tabela
-                2 = se é AI
-                3 = conteudo
-                    Array multidimensional ex: $dados = array (
-                                                    array("Nome",tipo,tamanho),
-                                                    array("Nome",tipo,tamanho),
-                                                    array("Nome",tipo,tamanho),
-                                                    array("Nome",tipo,tamanho)
-                                                );
-                    tipos: 1 = int / 2 = vachar / 3 = text / 4 = date
+        public function createTable($name, $auto, $content){ // create a table by inserting the name, if auto-increment and the content in array multidimensional
+            /*                
+                    Array: $dados = array (
+                        array("name",type, size),
+                        array("name",type, size),
+                        array("name",type, size),
+                        array("name",type, size)
+                    );
+                    type: 1 = int / 2 = vachar / 3 = text / 4 = date
             */
             $table = "CREATE TABLE IF NOT EXISTS ".$name." (";
             $line = 0;
@@ -114,18 +117,15 @@
         }
         
         public function insertData($nt, $columns, $values){
-            /* parametros:
+            /* parameters:             
              *  1°
-             *  True para dados simples
-             *  False para array
+             *  name table
              *  2°
-             *  Nome tabela
+             *  name column or array with columns
              *  3°
-             *  Nome coluna ou array com colunas
-             *  4°
-             *  Valor da coluna ou valores das colunas
+             *  column value or array with columns values
             */
-                        
+            
             $sql = "INSERT INTO ".$nt." (";
             
             $c = 0;
@@ -137,7 +137,6 @@
                 }
                 $c ++;
             }
-            
             $sql .= " values (";
             
             $c = 0;
@@ -165,19 +164,50 @@
             }
         }
         
-        public function consultTableID($id, $table, $colunasConsulta){
-            $arrayRetorno = array();
+        public function consultTableID($id, $table, $columns){ // consult simple by id / 1° = id / 2° name table / 3° returned columns
+            $arrayReturn = array();
             $rs = $this->get_connection()->prepare("SELECT * FROM $table WHERE id = ?");
             $rs->bindParam(1, $id);
             if($rs->execute()){
                 if($registro = $rs->fetch(PDO::FETCH_OBJ)){
-                    foreach($colunasConsulta as $vl){
+                    foreach($columns as $vl){
                         $i = $registro->$vl;
-                        array_push($arrayRetorno, $i);                        
+                        array_push($arrayReturn, $i);                        
                     }
                 }
+            }            
+            return $arrayReturn;
+        }
+        
+        public function consultTableFull($table, $columns, $orderColumns, $sort){ // consult all data the table / 1° table / 2° returned columns / 3° sort column / 4° sort
+            //$sort: 0 = none / 1 = ascending and 3 = descending
+            $arrayReturn = array();
+            
+            switch($sort){
+                case(0):                    
+                    $sql = "SELECT * FROM $table";
+                    break;
+                case(1):
+                    $sql = "SELECT * FROM $table ORDER BY $table . $orderColumns ASC";
+                    break;
+                case(2):
+                    $sql = "SELECT * FROM $table ORDER BY $table . $orderColumns DESC";
+                break;
             }
-            return $arrayRetorno;
+            
+            $rs = $this->get_connection()->prepare($sql);
+            if($rs->execute()){
+                while($registro = $rs->fetch(PDO::FETCH_OBJ)){
+                    $i2 = array();
+                    foreach($columns as $vl){
+                        $i1 = $registro->$vl;
+                        array_push($i2, $i1);
+                    }                                
+                    array_push($arrayReturn, $i2);
+                }
+            }
+            
+            return $arrayReturn;
         }
         
         /*
@@ -187,6 +217,9 @@
             
         }
         */
+        
+        // to be continued
+
     }
     
     
